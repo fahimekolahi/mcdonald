@@ -126,9 +126,9 @@ function syncFromLocalStorageToBuyList() {
     if (jsonData) {
         buyList = JSON.parse(jsonData)
         addMenu()
-        
+
     }
-    
+
 }
 
 
@@ -168,24 +168,24 @@ function editCount(id, operator) {
 
     buyList = temp
 
-syncFromBuyListToLocalStorage()
+    syncFromBuyListToLocalStorage()
 
-addMenu()
-render()
-totalSum()
+    addMenu()
+    render()
+    totalSum()
 
-// console.log(temp)
+    // console.log(temp)
 }
 
 
 
 
 
-function render(){
+function render() {
     let temp = buyList
-let finalShopList = ""
-buyList.forEach(item=>{
-    finalShopList+= `
+    let finalShopList = ""
+    buyList.forEach(item => {
+        finalShopList += `
     <div class="flex gap-2 mt-[1rem] w-auto h-[2rem] px-1  bg-white text-black flex  justify-between mx-2">
     
     <p class="text-black">کد غذا : ${item.foodId}</p>
@@ -196,28 +196,28 @@ buyList.forEach(item=>{
     
     
     </div>`
-})
+    })
 
-// console.log(temp)
-cardTotal.innerHTML = finalShopList
+    // console.log(temp)
+    cardTotal.innerHTML = finalShopList
 
 }
 
 
-function totalSum(){
+function totalSum() {
     let totalPrice = 0
-    buyList.forEach(item=>{
-    
-    let finder = foodList.find(food=>food.id==item.foodId)
-totalPrice+= item.count * finder.cost
-})
+    buyList.forEach(item => {
+
+        let finder = foodList.find(food => food.id == item.foodId)
+        totalPrice += item.count * finder.cost
+    })
 
 
-// console.log(totalPrice)
-majmou.innerHTML= totalPrice
+    // console.log(totalPrice)
+    majmou.innerHTML = totalPrice
 
-return totalPrice
-// multi(loopResult)
+    return totalPrice
+    // multi(loopResult)
 
 }
 
@@ -229,13 +229,13 @@ totalSum()
 
 
 
-   
-function multi(value){
+
+function multi(value) {
     let result = value * 0.02;
-    ma.innerHTML= result;
-    
+    ma.innerHTML = result;
+
     return result;
-    
+
 }
 let loopResult = totalSum();
 
@@ -247,28 +247,28 @@ let loopResult = totalSum();
 
 
 
-function takhfif(){
+function takhfif() {
     let suming = totalSum()
     console.log(suming)
-let inputValue = document.getElementById("input").value;
-    if(inputValue==="golden"){
+    let inputValue = document.getElementById("input").value;
+    if (inputValue === "golden") {
         console.log("gn")
-suming= suming* 0.25;
-mtakhfif.innerHTML= suming;
-return suming;
-    }else if(inputValue==="silver"){
-        suming = suming*0.15;
-        mtakhfif.innerHTML=suming;
+        suming = suming * 0.25;
+        mtakhfif.innerHTML = suming;
         return suming;
-    }else if(inputValue==="bronze"){
-        suming = suming*0.10;
-        mtakhfif.innerHTML=suming;
+    } else if (inputValue === "silver") {
+        suming = suming * 0.15;
+        mtakhfif.innerHTML = suming;
         return suming;
-    }else{
+    } else if (inputValue === "bronze") {
+        suming = suming * 0.10;
+        mtakhfif.innerHTML = suming;
+        return suming;
+    } else {
         return 0
     }
 
-// console.log(suming)
+    // console.log(suming)
 }
 
 
@@ -277,18 +277,31 @@ return suming;
 
 
 
-function combineResult(){
+function combineResult() {
 
-let result1=totalSum();
-let result2= multi(result1);
-let result3 = takhfif();
+    let result1 = totalSum();
+    let result2 = multi(result1);
+    let result3 = takhfif();
 
-let combining = result1+ result2 - result3;
+    let combining = result1 + result2 - result3;
 
-pardakht.innerHTML= combining
+    pardakht.innerHTML = combining
 
 
 }
+
+
+
+function resetValues() {
+    document.getElementById("pardakht").textContent = "0";
+    document.getElementById("mtakhfif").textContent = "0";
+    document.getElementById("ma").textContent = "0";
+    document.getElementById("majmou").textContent = "0";
+    document.getElementById("cardTotal").textContent = "";
+
+}
+
+
 
 
 ///dom part
@@ -325,12 +338,12 @@ function addMenu() {
     let empty = ""
     foodList.forEach(item => {
         let foodCount = buyList.find(food => food.foodId == item.id)?.count ?? 0
-        empty += `<div class="grid grid-cols-2 gap-1 my-2 w-auto text-[14px] border border-gray-400 h-[7rem] xl:h-[13rem] mx-2 rounded-[6px] p-2">
+        empty += `<div class="grid grid-cols-2 gap-2 my-2 w-auto text-[14px] border border-gray-400  xl:h-auto mx-2 rounded-[6px] p-2">
         
-        <div class="flex  gap-4 border-black px-2">
+        <div class="flex  gap-4 border-black px-2 w-[100px] h-[90px] sm:w-[120px] md:w-[130px] my-auto">
         
-        <img src="${item.image}" >
-        
+        <img src="${item.image}" class="w-full">
+        </div>
 
         <div class="flex flex-col gap-2 xl:my-2 xl:w-full">
         <p class="font-bold w-[100px] xl:text-[17px]">${item.name}  </p>
@@ -366,6 +379,7 @@ function addMenu() {
     menuWrapper.innerHTML = empty
     multi(totalSum())
     combineResult()
+    render()
 }
 
 addMenu()
